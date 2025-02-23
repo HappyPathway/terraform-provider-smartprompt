@@ -53,3 +53,49 @@ This repository includes:
 ## Contributing
 
 Please see the [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for guidelines.
+
+# Terraform Provider for Smart Prompt
+
+This provider allows you to use the Smart Prompt API to refine prompts as part of your Terraform configurations.
+
+## Usage
+
+```hcl
+terraform {
+  required_providers {
+    smartprompt = {
+      source = "yourusername/smartprompt"
+    }
+  }
+}
+
+provider "smartprompt" {
+  api_url = "http://localhost:8000"  # URL of the Smart Prompt API
+  timeout = 30  # Request timeout in seconds
+}
+
+data "smartprompt_refined" "example" {
+  lazy_prompt = "tell me about terraform"
+}
+
+output "refined_prompt" {
+  value = data.smartprompt_refined.example.refined_prompt
+}
+```
+
+## Provider Configuration
+
+- `api_url` (Required) - The base URL of the Smart Prompt API
+- `timeout` (Optional) - Request timeout in seconds. Defaults to 30.
+
+## Data Sources
+
+### smartprompt_refined
+
+Use this data source to refine a prompt using the Smart Prompt API.
+
+#### Arguments
+- `lazy_prompt` (Required) - The simple prompt to be refined
+
+#### Attributes
+- `refined_prompt` - The resulting refined prompt
